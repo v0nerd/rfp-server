@@ -15,3 +15,9 @@ async def upload_file_to_s3(file: UploadFile) -> str:
     s3_client.put_object(Bucket=S3_BUCKET, Key=file_key, Body=file_content)
 
     return file_key
+
+
+async def download_file_from_s3(file_key: str) -> bytes:
+    response = s3_client.get_object(Bucket=S3_BUCKET, Key=file_key)
+    file_contents = response["Body"].read()
+    return file_contents
