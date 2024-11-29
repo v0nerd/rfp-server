@@ -1,7 +1,7 @@
 from fastapi import UploadFile
 import boto3
 
-S3_BUCKET = "raw-rfp-documents"
+S3_BUCKET = "von-rfps"
 s3_client = boto3.client("s3", region_name="us-east-2")
 
 
