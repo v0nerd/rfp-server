@@ -2,7 +2,7 @@ from fastapi import UploadFile
 import boto3
 
 S3_BUCKET = "von-rfps"
-s3_client = boto3.client("s3", region_name="us-east-2")
+s3_client = boto3.client("s3")
 
 
 async def upload_file_to_s3(file: UploadFile) -> str:
