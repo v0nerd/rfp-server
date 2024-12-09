@@ -1,4 +1,7 @@
-from fastapi import FastAPI, Request, UploadFile, File, HTTPException
+import aioredis
+import hashlib
+import json
+from fastapi import FastAPI, Request, UploadFile, File, HTTPException, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from app.services.preprocess import (
@@ -6,6 +9,7 @@ from app.services.preprocess import (
     extract_text_from_pdf,
     get_section_from_file,
     get_technical_requirements,
+    get_from_file,
     clean_text,
 )
 from core.utils.storage import upload_file_to_s3
@@ -25,10 +29,34 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Define the path to your templates directory
 templates = Jinja2Templates(directory="app/templates")
 
+# Initialize Redis client
+redis = None
+
+
+async def get_redis():
+    return redis
+
+
+@app.on_event("startup")
+async def startup_event():
+    global redis
+    redis = await aioredis.from_url("redis://localhost:6379", decode_responses=True)
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await redis.close()
+
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "message": "Welcome to the FastAPI API!"})
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "message": "This is AugierAI Proposal generator for Small Businesses",
+        },
+    )
 
 
 @app.post("/upload/")
@@ -69,11 +97,24 @@ async def generate_proposals(file: UploadFile = File(...)):
 
         content = clean_text(content)
 
-        response = await get_technical_requirements(
-            file_paths=file_paths, file_extension=file_extension
+        # Generate a unique key for caching
+        cache_key = hashlib.sha256((file.filename + "proposal").encode()).hexdigest()
+
+        # Check Redis cache
+        cached_data = await redis.get(cache_key)
+        if cached_data:
+            return {"response": json.loads(cached_data)}
+
+        response = await get_from_file(
+            file_paths=file_paths,
+            file_extension=file_extension,
+            option="tech",
         )
 
         proposal = await generate_proposal(content, response)
+
+        # Save to Redis cache
+        await redis.set(cache_key, json.dumps(proposal), ex=3600)  # 1-hour expiration
 
         return {"response": proposal}
     finally:
@@ -101,12 +142,26 @@ async def generate_compliance_reports(file: UploadFile = File(...)):
 
         file_paths.append(file_location)
 
-        response = await get_section_from_file(
+        # Generate a unique key for caching
+        cache_key = hashlib.sha256((file.filename + "compliance").encode()).hexdigest()
+
+        # Check Redis cache
+        cached_data = await redis.get(cache_key)
+        if cached_data:
+            return {"response": json.loads(cached_data)}
+
+        response = await get_from_file(
             file_paths=file_paths,
             file_extension=file_extension,
+            option="section",
         )
 
         compliance_report = await generate_compliance(response)
+
+        # Save to Redis cache
+        await redis.set(
+            cache_key, json.dumps(compliance_report), ex=3600
+        )  # 1-hour expiration
 
         return compliance_report
     finally:

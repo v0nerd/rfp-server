@@ -188,3 +188,94 @@ async def get_technical_requirements(
     response = query_engine.query(query).response
 
     return response
+
+
+async def get_from_file(
+    file_paths: list = [], file_extension: str = "pdf", option: str = "section"
+) -> str:
+
+    # set up parser
+    parser = LlamaParse(result_type="text")  # "markdown" and "text" are available
+
+    file_extractor = {".pdf": parser}
+
+    if file_extension == "docx":
+        # use SimpleDirectoryReader to parse our file
+        file_extractor = {".docx": parser}
+    documents = await SimpleDirectoryReader(
+        input_files=file_paths, file_extractor=file_extractor
+    ).aload_data()
+
+    # create an index from the parsed markdown
+    index = VectorStoreIndex.from_documents(documents)
+
+    # create a query engine for the index
+    query_engine = index.as_query_engine()
+
+    # query the engine
+    if option == "tech":
+        query = """
+        What technical requirements and deliverables are needed for this rfp document?
+        """
+
+    elif option == "section":
+        query = """
+        Classify each section of attached RFP document according to the categories provided as following. If section is provided, give detailed information from the document:
+
+        Categories:
+        1. Introduction
+            1.1 Purpose of the RFP
+            1.2 Background
+            1.3 Scope of the RFP
+        2. Objectives
+            2.1 Project Goals
+            2.2 Expected Outcomes
+        3. Scope of Work
+            3.1 Deliverables.
+                Design, development, and deployment of <product/service>.
+                User training and documentation.
+                Ongoing maintenance and support for <X> months/years.
+            3.2 Timeline
+            3.3 Project Requirements
+        4. Eligibility Criteria
+            4.1 Vendor Qualifications
+            4.2 Financial Stability
+            4.3 References
+                Project description.
+                Scope of work.
+                Project outcomes.
+        5. Proposal Instructions
+            5.1 Proposal Submission
+            5.2 Proposal Format
+            5.3 Questions and Clarifications
+        6. Evaluation Criteria
+            6.1 Evaluation Process
+            6.2 Scoring System
+        7. Budget and Pricing
+            7.1 Pricing Structure
+            7.2 Payment Terms
+            7.3 Budget Limitations
+        8. Timeline
+            8.1 Project Milestones
+            8.2 Deliverable Deadlines
+        9. Terms and Conditions
+            9.1 Confidentiality
+            9.2 Indemnification
+            9.3 Governing Law
+            9.4 Contractual Agreement
+        10. Contact Information
+            <Name>
+            <Title>
+            <Company Name>
+            <Phone Number>
+            <Email Address>
+        """
+
+    elif option == "budget":
+        query = """
+        What is the budget and pricing structure for this rfp document?
+        """
+
+    response = query_engine.query(query).response
+
+    return response

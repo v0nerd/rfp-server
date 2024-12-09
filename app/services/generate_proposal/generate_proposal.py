@@ -1,5 +1,6 @@
 from app.services.generate_proposal.summarization_model import SummarizationModel
 from transformers import BartForConditionalGeneration, BartTokenizer
+from peft import get_peft_model, LoraConfig
 import os
 
 import openai
@@ -12,6 +13,13 @@ import os
 load_dotenv()
 
 api_key = os.environ.get("OPENAI_API_KEY")
+
+
+def apply_lora_to_bart(model_name: str, lora_config: dict):
+    model = BartForConditionalGeneration.from_pretrained(model_name)
+    # Apply LoRA to the model
+    model = get_peft_model(model, LoraConfig(**lora_config))
+    return model
 
 
 def generate_technical_content(requirements):
@@ -64,8 +72,8 @@ async def generate_proposal(content, technical_requirements):
             "rfp-models", "summarization_model_fine_tuned"
         )
 
-    summarization_model.model = BartForConditionalGeneration.from_pretrained(
-        "models/summarization_model_fine_tuned"
+    summarization_model.model = apply_lora_to_bart(
+        summarization_model.model_name, summarization_model.config["lora"]
     )
     summarization_model.tokenizer = BartTokenizer.from_pretrained(
         "models/summarization_model_fine_tuned"
