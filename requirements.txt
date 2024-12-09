@@ -1,9 +1,11 @@
+aioredis==2.0.1
 boto3==1.35.71
 docx2txt==0.8
 fastapi==0.115.5
 langchain==0.3.9
 langchain-openai==0.2.11
 llama_index==0.12.2
+peft==0.13.2
 PyPDF2==3.0.1
 python-docx==1.1.2
 python-dotenv==1.0.1
