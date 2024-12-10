@@ -2,14 +2,51 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
-    <title>FastAPI with Jinja2</title>
+    <title>AugierAI</title>
 </head>
+
 <body>
-    <h1>{{ message }}</h1>
-    <p>Welcome to the FastAPI API!</p>
+    <header class="header">
+        <div class="logo">
+            <img src="https://www.augierai.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faugier-logo.952a2a72.jpg&w=64&q=75"
+                alt="Augier Logo">
+            <span>Augier</span>
+        </div>
+        <nav class="navigation">
+            <a href="#" class="login">Login</a>
+            <a href="#" class="btn">Explore Opportunities</a>
+        </nav>
+    </header>
+    <main class="main-content">
+        <div class="rating">
+            <span class="stars">⭐⭐⭐⭐⭐</span>
+            <span class="review-text">Rated 4.9/5 by our verified and happy clients</span>
+        </div>
+        <h1>
+            Empowering <span class="highlight">Small Businesses</span> to Win Government Contracts
+        </h1>
+        <p class="description">
+            Augierai.com is a comprehensive AI-powered platform designed to assist small to mid-sized businesses through
+            the entire procurement lifecycle, from finding opportunities to teaming and project management.
+        </p>
+        <a href="#" class="cta-btn">Try Now For Free</a>
+        <p class="cta-note">No credit card required</p>
+        <div>
+            <img src="https://www.augierai.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero_image.a9878d68.jpg&w=1080&q=75"
+                alt="Tutorial">
+            <h2>Increased Procurement Efficiency</h2>
+            <p>
+                Our AI-powered system helps businesses streamline their procurement processes, reducing costs and
+                improving
+                efficiency.
+            </p>
+        </div>
+    </main>
 </body>
+
 </html>

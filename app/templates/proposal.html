@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <title>AugierAI</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: #000000;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #000000;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #4CAF50;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #45a049;
+        }
+
+        .ai-generate {
+            display: inline-block;
+            color: #000000;
+            text-decoration: solid;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Proposal</h1>
+    </header>
+    <main>
+        <section>
+            <h2 class="ai-generate">Executive Summary</h2>
+            <p>{{ executive_summary }}</p>
+        </section>
+        <section>
+            <h2>Introduction to Our Company</h2>
+            <ul>
+                <li>Company background and relevant experience.</li>
+                <li>Showcase of key accomplishments and projects.</li>
+                <li>Information on company size, stability, and reputation.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Project Understanding</h2>
+            <p>We understand your goals and objectives thoroughly. Our strategy will address potential challenges with
+                proactive solutions.</p>
+        </section>
+        <section>
+            <h2 class="ai-generate">Proposed Approach/Methodology</h2>
+            <p>{{ technical_approach|safe }}</p>
+        </section>
+        <section>
+            <h2>Project Team</h2>
+            <ul>
+                <li><strong>Project Manager:</strong> Experienced in overseeing similar projects.</li>
+                <li><strong>Lead Developer:</strong> Expert in fast API implementations.</li>
+                <li><strong>Designer:</strong> Skilled in UI/UX for optimal user engagement.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Timeline/Milestones</h2>
+            <p>Here will be displayed detailed timeline and milestones</p>
+        </section>
+        <section>
+            <h2 class="ai-generate">Budget Breakdown</h2>
+            <p>{{ budget_info|safe }}</p>
+        </section>
+        <section>
+            <h2>Evaluation Criteria Response</h2>
+            <p>Our proposal meets or exceeds all specified requirements, supported by relevant examples.</p>
+        </section>
+        <section>
+            <h2>Conclusion</h2>
+            <p>We are confident that our expertise, methodology, and team make us the best choice for this project.</p>
+            <a href="#" class="button">Download Full Proposal</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
