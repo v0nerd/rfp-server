@@ -1,9 +1,16 @@
-# AugierAI Proposal Generator for Small Businesses
+<div align="center">
+
+# **AugierAI Proposal Generator**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
+</div>
+
+![Alt text](https://github.com/v0nerd/rfp-server/blob/main/Assets/Augier-assessment.png)
 
 This project is an AI-powered solution designed to automate proposal generation and compliance checking for small businesses. It leverages state-of-the-art NLP models, including BART for proposal generation and BERT for compliance checking, to streamline the creation of business proposals from RFP (Request for Proposal) documents. The solution is built using **FastAPI**, **Redis**, and **AWS** services, ensuring high scalability and efficient processing.
 
 ## Table of Contents
-- [AugierAI Proposal Generator for Small Businesses](#augierai-proposal-generator-for-small-businesses)
+- [**AugierAI Proposal Generator**](#augierai-proposal-generator)
   - [Table of Contents](#table-of-contents)
   - [Project Overview](#project-overview)
   - [Key Features](#key-features)
