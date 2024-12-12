@@ -65,7 +65,7 @@ def generate_technical_content(requirements):
 
 async def generate_proposal(content, technical_requirements):
     summarization_model = SummarizationModel()
-    summarization_model.input = content
+    summarization_model.input = "Summarize the following RFP document.\n\n" + content
 
     if not os.path.isdir(summarization_model.config["model"]["model_path"]):
         summarization_model.download_from_s3(
