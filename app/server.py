@@ -38,8 +38,8 @@ async def get_redis():
 @app.on_event("startup")
 async def startup_event():
     global redis
-    # redis = await aioredis.from_url("redis://redis-service:6379", decode_responses=True)
-    redis = await aioredis.from_url("redis://localhost:6379", decode_responses=True)
+    redis = await aioredis.from_url("redis://redis-service:6379", decode_responses=True)
+    # redis = await aioredis.from_url("redis://localhost:6379", decode_responses=True)
 
 
 @app.on_event("shutdown")
